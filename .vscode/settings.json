@@ -1,0 +1,23 @@
+{
+  "javascript.validate.enable": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": false,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": false
+  },
+  "eslint.validate": [ "html", "javascript", "javascriptreact"],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "vs-slug.lowercase": false,
+  "vs-slug.separator": "_"
+}
