@@ -1,0 +1,16 @@
+[{
+  "name": "default",
+  "type": "mongodb",
+  "host": "localhost",
+  "port": 27017,
+  "database": "todo-list-aos",
+  "useUnifiedTopology": true
+}, {
+  "name": "second-connection",
+  "type": "mongodb",
+  "host": "localhost",
+  "port": 27017,
+  "username": "test",
+  "password": "test",
+  "database": "test"
+}]

@@ -1,12 +1,17 @@
 import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server'
 import { buildSchema } from 'type-graphql'
+import { createConnection } from 'typeorm'
 
 import { UserResolver } from './resolvers'
 
 const PORT = process.env.PORT || 4000
 
 async function runServer() {
+  // MongoDB database connection
+
+  await createConnection()
+
   // ... Building schema here
   const schema = await buildSchema({
     resolvers: [UserResolver]
