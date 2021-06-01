@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql'
-import { Entity, ObjectID, ObjectIdColumn, Column } from 'typeorm'
+import { Entity, ObjectIdColumn, Column } from 'typeorm'
 
 import { Role } from '../enums'
 
@@ -8,7 +8,7 @@ import { Role } from '../enums'
 export class User {
   @Field(() => ID)
   @ObjectIdColumn()
-  readonly id: ObjectID
+  readonly id: string
 
   @Field({ nullable: true })
   @Column({ nullable: true, unique: true })
