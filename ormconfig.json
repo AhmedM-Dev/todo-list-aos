@@ -4,6 +4,10 @@
   "host": "localhost",
   "port": 27017,
   "database": "todo-list-aos",
+  "synchronize": true,
+  "logger": "advanced-console",
+  "logging": true,
+  "entities": ["src/model/*.*"],
   "useUnifiedTopology": true
 }, {
   "name": "second-connection",
