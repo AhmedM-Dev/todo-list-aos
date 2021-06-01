@@ -12,13 +12,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/uuid": "^8.3.0",
     "apollo-server": "^2.25.0",
     "class-validator": "^0.13.1",
     "graphql": "^15.5.0",
     "mongodb": "^3.6.9",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.32"
+    "typeorm": "^0.2.32",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",
