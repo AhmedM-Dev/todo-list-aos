@@ -1,13 +1,13 @@
 import { Query, Resolver } from 'type-graphql'
 
-import { User } from '../types'
+import { User } from '../model/user'
 
 @Resolver(User)
 export class UserResolver {
   private usersCollection: User[] = []
 
-  @Query(returns => [User])
-  async getAllUsers() {
+  @Query(() => [User])
+  getAllUsers() {
     return this.usersCollection
   }
 }
