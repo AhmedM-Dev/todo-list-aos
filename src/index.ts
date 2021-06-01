@@ -5,12 +5,18 @@ import { createConnection } from 'typeorm'
 
 import { UserResolver } from './resolvers'
 
+import seedDatabase from './helpers/seedDatabase'
+
 const PORT = process.env.PORT || 4000
 
 async function runServer() {
-  // MongoDB database connection
+  // MongoDB database TypeORM connection
 
+  // create TypeORM connection
   await createConnection()
+
+  // seed database with some data
+  await seedDatabase()
 
   // ... Building schema here
   const schema = await buildSchema({

@@ -10,16 +10,16 @@ export class User {
   @ObjectIdColumn()
   readonly id: ObjectID
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true, unique: true })
   email?: string
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Field()
+  @Column({ unique: true })
   username: string
 
-  @Field(() => Role, { nullable: true })
-  @Column({ nullable: true })
+  @Field(() => Role)
+  @Column()
   role: Role
 
   @Column()
