@@ -6,7 +6,7 @@ import cryptyo from 'crypto'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-import { User } from '../model/User'
+import { User } from '../entities/User'
 
 import { Role } from '../enums'
 

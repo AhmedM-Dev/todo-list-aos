@@ -1,6 +1,6 @@
 import { AuthChecker } from 'type-graphql'
 
-import { User } from './model/User'
+import { User } from './entities/User'
 
 interface Context {
   user?: User

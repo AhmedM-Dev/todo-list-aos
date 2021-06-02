@@ -1,6 +1,8 @@
 import { Field, ID, ObjectType } from 'type-graphql'
 import { Entity, ObjectIdColumn, Column } from 'typeorm'
 
+import { Comment } from '.'
+
 import { TaskStatus } from '../enums'
 
 @ObjectType()
@@ -29,4 +31,8 @@ export class Task {
   @Field()
   @Column()
   ownerId: string
+
+  @Field(() => [Comment], { nullable: true })
+  @Column(() => Comment)
+  comments?: Comment[]
 }

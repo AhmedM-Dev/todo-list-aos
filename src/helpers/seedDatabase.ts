@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { getMongoManager } from 'typeorm'
 
-import { User } from '../model/User'
+import { User } from '../entities/User'
 
 import { Role } from '../enums'
 

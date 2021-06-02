@@ -7,7 +7,7 @@
   "synchronize": true,
   "logger": "advanced-console",
   "logging": true,
-  "entities": ["src/model/*.*"],
+  "entities": ["src/entities/*.*"],
   "useUnifiedTopology": true
 }, {
   "name": "second-connection",
