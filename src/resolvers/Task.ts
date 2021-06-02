@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
 import { getMongoRepository, MongoRepository } from 'typeorm'
-import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, Ctx } from 'type-graphql'
+import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, Ctx, FieldResolver, Root } from 'type-graphql'
 import { IsEmail, MinLength } from 'class-validator'
 
-import { User, Task } from '../model'
+import { User, Task, Comment } from '../entities'
 
 import { TaskStatus } from '../enums'
 
@@ -65,15 +65,23 @@ interface Context {
 @Resolver(Task)
 export class TaskResolver {
   private taskRepository: MongoRepository<Task> = getMongoRepository(Task)
+  private commentRepository: MongoRepository<Comment> = getMongoRepository(Comment)
+
+  @FieldResolver()
+  comments(@Root() task: Task) {
+    return this.commentRepository.find({ taskId: task.id })
+  }
 
   @Authorized()
   @Query(() => [Task], { nullable: true })
-  getAllTasks(@Ctx() context: Context) {
-    return this.taskRepository.find({
+  async getAllTasks(@Ctx() context: Context) {
+    const allTasks = await this.taskRepository.find({
       where: {
         $or: [{ ownerId: context.user?.id }, { access: context.user?.id }]
       }
     })
+
+    return allTasks
   }
 
   @Authorized()
