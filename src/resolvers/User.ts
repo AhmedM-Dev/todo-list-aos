@@ -51,6 +51,7 @@ interface Context {
   user?: User
 }
 
+// A middleware function to check whether it is allowed to update a user
 const IsAllowedToUpdateUser: MiddlewareFn<Context> = async ({ args, context }, next) => {
   if (context.user?.role !== Role.ADMIN && context.user?.id !== args.id) {
     throw new Error('Forbidden')
@@ -65,20 +66,26 @@ export class UserResolver {
 
   @Query(() => String, { nullable: true })
   async getToken(@Arg('email') email: string, @Arg('password') password: string) {
+    // Fetching the concerned user by its email
     const user = await this.userRepository.findOne({ email })
 
+    // Checking if the user with the provided email exists
     if (!user) throw new Error('User not found!')
 
+    // Checking password matching
     const passwordMatch = bcrypt.compareSync(password, user.password)
 
     if (!passwordMatch) throw new Error('Invalid password!')
 
+    // If the password provided is correct, we generate a new user token
     const token = jwt.sign(JSON.parse(JSON.stringify(user)), process.env.SECRET as string, { algorithm: 'HS256' })
 
+    // Returning the generated token formatted as 'Bearer [token]'
     return `Bearer ${token}`
   }
 
-  @Authorized()
+  // Only thee admin can list all users
+  @Authorized(Role.ADMIN)
   @Query(() => [User], { nullable: true })
   getAllUsers() {
     return this.userRepository.find()
@@ -97,6 +104,7 @@ export class UserResolver {
     return user
   }
 
+  // Only the admin can add new users
   @Authorized(Role.ADMIN)
   @Mutation(() => User, { nullable: true })
   async addUser(@Arg('data') newUserData: AddUserInput): Promise<User | undefined> {
@@ -118,20 +126,26 @@ export class UserResolver {
   async updateUser(@Arg('data') newUserData: UpdateUserInput): Promise<User | undefined> {
     const { id, ...data } = newUserData
 
+    // Fetching the concerned user from database
     const user = await this.userRepository.findOne({ id })
 
+    // Checking if the user exist
     if (!user) throw new Error('User not found!')
 
+    // Proceeding with user update
     await this.userRepository.updateOne({ _id: id }, { $set: data })
 
+    // Fetching and returning the newly updated user
     return this.userRepository.findOne({ id })
   }
 
+  // Only the admin can delete users
   @Authorized(Role.ADMIN)
-  @Mutation(() => Boolean, { nullable: true })
-  async deleteUser(@Arg('id') id: string): Promise<boolean> {
+  @Mutation(() => String, { nullable: true })
+  async deleteUser(@Arg('id') id: string): Promise<string> {
     const result = await this.userRepository.deleteOne({ _id: id })
 
-    return result.result === { n: 1, ok: 1 }
+    // Returning a message to the admin depending on the deletion result
+    return result.result.n !== 0 ? 'Successfully deleted user.' : 'Cloud not delete the user!'
   }
 }
