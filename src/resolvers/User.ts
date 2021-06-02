@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { getMongoRepository, MongoRepository } from 'typeorm'
-import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized } from 'type-graphql'
+import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, UseMiddleware, MiddlewareFn } from 'type-graphql'
 import { IsEmail, MinLength } from 'class-validator'
 import cryptyo from 'crypto'
 import bcrypt from 'bcryptjs'
@@ -25,6 +25,38 @@ class AddUserInput implements Partial<User> {
   @Field({ nullable: true })
   @MinLength(5)
   password?: string
+}
+
+@InputType({ description: 'Update user data' })
+class UpdateUserInput implements Partial<User> {
+  @Field()
+  id: string
+
+  @Field({ nullable: true })
+  @IsEmail()
+  email?: string
+
+  @Field({ nullable: true })
+  username?: string
+
+  @Field({ nullable: true })
+  role?: Role
+
+  @Field({ nullable: true })
+  @MinLength(5)
+  password?: string
+}
+
+interface Context {
+  user?: User
+}
+
+const IsAllowedToUpdateUser: MiddlewareFn<Context> = async ({ args, context }, next) => {
+  if (context.user?.role !== Role.ADMIN && context.user?.id !== args.id) {
+    throw new Error('Forbidden')
+  }
+
+  return next()
 }
 
 @Resolver(User)
@@ -53,11 +85,7 @@ export class UserResolver {
 
   @Query(() => User, { nullable: true })
   async getUser(@Arg('id') id: string) {
-    console.log('id', id)
-
     const user = await this.userRepository.findOne({ id })
-
-    console.log('user', user)
 
     return user
   }
@@ -75,5 +103,20 @@ export class UserResolver {
     })
 
     return result?.ops?.[0]
+  }
+
+  @Authorized()
+  @Mutation(() => User, { nullable: true })
+  @UseMiddleware(IsAllowedToUpdateUser)
+  async updateUser(@Arg('data') newUserData: UpdateUserInput): Promise<User | undefined> {
+    const { id, ...data } = newUserData
+
+    const user = await this.userRepository.findOne({ id })
+
+    if (!user) throw new Error('User not found!')
+
+    await this.userRepository.updateOne({ _id: id }, { $set: data })
+
+    return this.userRepository.findOne({ id })
   }
 }
