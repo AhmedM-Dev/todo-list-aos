@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { getMongoRepository, MongoRepository } from 'typeorm'
-import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, UseMiddleware, MiddlewareFn } from 'type-graphql'
+import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, UseMiddleware, MiddlewareFn, Ctx } from 'type-graphql'
 import { IsEmail, MinLength } from 'class-validator'
 import cryptyo from 'crypto'
 import bcrypt from 'bcryptjs'
@@ -64,7 +64,7 @@ export class UserResolver {
   private userRepository: MongoRepository<User> = getMongoRepository(User)
 
   @Query(() => String, { nullable: true })
-  async auth(@Arg('email') email: string, @Arg('password') password: string) {
+  async getToken(@Arg('email') email: string, @Arg('password') password: string) {
     const user = await this.userRepository.findOne({ email })
 
     if (!user) throw new Error('User not found!')
@@ -78,13 +78,20 @@ export class UserResolver {
     return `Bearer ${token}`
   }
 
+  @Authorized()
   @Query(() => [User], { nullable: true })
   getAllUsers() {
     return this.userRepository.find()
   }
 
+  @Authorized()
   @Query(() => User, { nullable: true })
-  async getUser(@Arg('id') id: string) {
+  async getUser(@Arg('id') id: string, @Ctx() context: Context) {
+    // Only the admin or the user himself can access his own data
+    if (context.user?.role !== Role.ADMIN && id !== context.user?.id) {
+      throw new Error("Forbidde, you don't have the right to acces this user's infos")
+    }
+
     const user = await this.userRepository.findOne({ id })
 
     return user
