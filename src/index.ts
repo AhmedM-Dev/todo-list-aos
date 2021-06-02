@@ -5,7 +5,7 @@ import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
 import jwt from 'express-jwt'
 
-import { UserResolver, TaskResolver } from './resolvers'
+import { UserResolver, TaskResolver, CommentResolver } from './resolvers'
 
 import authChecker from './authChecker'
 
@@ -25,7 +25,7 @@ async function runServer() {
 
   // ... Building schema here
   const schema = await buildSchema({
-    resolvers: [UserResolver, TaskResolver],
+    resolvers: [UserResolver, TaskResolver, CommentResolver],
     authChecker
   })
 
