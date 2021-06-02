@@ -8,8 +8,6 @@ interface Context {
 
 // create auth checker function
 const authChecker: AuthChecker<Context> = ({ context: { user } }, roles) => {
-  console.log('user', user)
-
   if (roles.length === 0) {
     // if `@Authorized()`, check only if user exists
     return user !== undefined
