@@ -6,6 +6,16 @@ export enum Role {
 }
 
 registerEnumType(Role, {
-  name: 'Role', // this one is mandatory
-  description: 'The user roles' // this one is optional
+  name: 'Role',
+  description: 'The user roles'
+})
+
+export enum TaskStatus {
+  COMPLETED = 'COMPLETED',
+  NOT_COMPLETED = 'NOT COMPLETED'
+}
+
+registerEnumType(TaskStatus, {
+  name: 'TaskStatus',
+  description: 'The task possible status'
 })
