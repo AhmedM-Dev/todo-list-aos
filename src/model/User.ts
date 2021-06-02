@@ -22,6 +22,7 @@ export class User {
   @Column()
   role: Role
 
+  @Field()
   @Column()
   password: string
 }
