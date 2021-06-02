@@ -17,7 +17,7 @@ export default {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: true,
+  collectCoverage: false,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: undefined,
@@ -84,7 +84,7 @@ export default {
   // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  // modulePathIgnorePatterns: [],
+  modulePathIgnorePatterns: ["<rootDir>/build/"],
 
   // Activates notifications for test results
   // notify: false,
@@ -93,7 +93,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: "ts-jest",
 
   // Run tests from one or more projects
   // projects: undefined,
