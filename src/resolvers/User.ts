@@ -119,4 +119,12 @@ export class UserResolver {
 
     return this.userRepository.findOne({ id })
   }
+
+  @Authorized(Role.ADMIN)
+  @Mutation(() => Boolean, { nullable: true })
+  async deleteUser(@Arg('id') id: string): Promise<boolean> {
+    const result = await this.userRepository.deleteOne({ _id: id })
+
+    return result.result === { n: 1, ok: 1 }
+  }
 }
