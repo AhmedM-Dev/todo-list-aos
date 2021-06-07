@@ -1,20 +1,25 @@
-[{
-  "name": "default",
-  "type": "mongodb",
-  "host": "localhost",
-  "port": 27017,
-  "database": "todo-list-aos",
-  "synchronize": true,
-  "logger": "advanced-console",
-  "logging": true,
-  "entities": ["src/entities/*.*"],
-  "useUnifiedTopology": true
-}, {
-  "name": "second-connection",
-  "type": "mongodb",
-  "host": "localhost",
-  "port": 27017,
-  "username": "test",
-  "password": "test",
-  "database": "test"
-}]
+[
+  {
+    "name": "default",
+    "type": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "database": "todo-list-aos",
+    "synchronize": true,
+    "entities": ["src/entities/*.*"],
+    "useUnifiedTopology": true
+  },
+  {
+    "name": "docker",
+    "type": "mongodb",
+    "host": "mongo",
+    "port": 27017,
+    "database": "todo-list-aos",
+    "synchronize": true,
+    "entities": ["build/entities/*.*"],
+    "useUnifiedTopology": true,
+    "username": "root",
+    "password": "aos",
+    "authSource": "admin"
+  }
+]

@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid'
-import { getMongoRepository, MongoRepository } from 'typeorm'
+import { MongoRepository } from 'typeorm'
 import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, Ctx, FieldResolver, Root } from 'type-graphql'
 import { MinLength } from 'class-validator'
+
+import { connection } from '../initDbConnection'
 
 import { User, Comment, Task } from '../entities'
 
@@ -31,9 +33,9 @@ interface Context {
 
 @Resolver(Comment)
 export class CommentResolver {
-  private commentRepository: MongoRepository<Comment> = getMongoRepository(Comment)
-  private userRepository: MongoRepository<User> = getMongoRepository(User)
-  private taskRepository: MongoRepository<Task> = getMongoRepository(Task)
+  private commentRepository: MongoRepository<Comment> = connection.getMongoRepository(Comment)
+  private userRepository: MongoRepository<User> = connection.getMongoRepository(User)
+  private taskRepository: MongoRepository<Task> = connection.getMongoRepository(Task)
 
   @FieldResolver(() => User, { nullable: true })
   author(@Root() comment: Comment): Promise<User | undefined> {

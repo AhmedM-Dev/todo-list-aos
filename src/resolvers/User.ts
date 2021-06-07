@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
-import { getMongoRepository, MongoRepository } from 'typeorm'
+import { MongoRepository } from 'typeorm'
 import { Arg, Query, Resolver, InputType, Field, Mutation, Authorized, UseMiddleware, MiddlewareFn, Ctx } from 'type-graphql'
 import { IsEmail, MinLength } from 'class-validator'
 import cryptyo from 'crypto'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+
+import { connection } from '../initDbConnection'
 
 import { User } from '../entities/User'
 
@@ -62,7 +64,7 @@ const IsAllowedToUpdateUser: MiddlewareFn<Context> = async ({ args, context }, n
 
 @Resolver(User)
 export class UserResolver {
-  private userRepository: MongoRepository<User> = getMongoRepository(User)
+  private userRepository: MongoRepository<User> = connection.getMongoRepository(User)
 
   @Query(() => String, { nullable: true })
   async getToken(@Arg('email') email: string, @Arg('password') password: string) {
