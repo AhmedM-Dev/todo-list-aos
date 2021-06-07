@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: aos
+
+  api:
+    image: todo-list-aos
+    environment:
+      NODE_ENV: docker
+    depends_on:
+      - mongo
+    ports:
+      - "4001:4001"
+
+  
