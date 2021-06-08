@@ -14,6 +14,6 @@ COPY ormconfig.json ./build/
 
 RUN yarn build
 
-EXPOSE 4001
+EXPOSE 4000
 
 CMD ["node", "./build/index.js"]

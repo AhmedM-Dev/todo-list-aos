@@ -12,7 +12,7 @@ import authChecker from './authChecker'
 
 import seedDatabase from './helpers/seedDatabase'
 
-const PORT = process.env.PORT || 4001
+const PORT = process.env.PORT || 4000
 
 const app = express()
 const path = '/graphql'
