@@ -89,14 +89,14 @@ The admin user creadentials are:
 To test the API you need to have a valid token.
 
 Generate a new token for the admin user using the following query:
-```json
+```JavaScript
 {
   autorization: getToken(email: "admin@todolist.aos", password: "admin")
 }
 ```
 
 you should get a response similar to the following:
-```json
+```JavaScript
 {
   "data": {
     "autorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjNWZmYmE4LWQ4ODctNDBhYy05NGVhLTk1N2Y3Nzk3YjgzNiIsImVtYWlsIjoiYWRtaW5AdG9kb2xpc3QuYW9zIiwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsInBhc3N3b3JkIjoiJDJ5JDEwJFNwd0ZLc1loYVNXbHB4dGs2VU5LY2VwLjl1Q1BPdWx0QzBGb3YwTUdrY2dWZnIvdFFWWTg2IiwiaWF0IjoxNjIzMTIzODU0fQ.jqlkMapYgdImHIWemJvaX-paD-_rkugg_eUS8qpwBsE"
@@ -119,7 +119,7 @@ now we are authenticated as admin
 
 Authenticated as admin you can create a new user using the following mutation:
 
-```json
+```JavaScript
 mutation {
   addUser(data: { email: "ahmed@test.com", username: "ahmed" }) {
     id
@@ -140,7 +140,7 @@ mutation {
 
 Only the admin or the user himself can updaate his inforamtions using this mutation as an example:
 
-```json
+```JavaScript
 mutation {
   updateUser(data: { id: "bbcbf477-ff51-4e14-898c-592a6e333878", username: "my_username2" }) {
     id
@@ -154,7 +154,7 @@ mutation {
 
 Only the admin can delete users using the following mutation:
 
-```json
+```JavaScript
 mutation {
   deleteUser(id: "3fa5012e-93d3-4dff-951c-ea4ea24bec62")
 }
@@ -166,7 +166,7 @@ mutation {
 
 **Create a new task**
 
-```json
+```JavaScript
 mutation {
   addTask(data: {  name: "another task", description: "I need to get the API docs done"}) {
     id
@@ -181,7 +181,7 @@ mutation {
 
 **Update task**
 
-```json
+```JavaScript
 mutation {
   updateTask(data: {id: "2679ef24-e3e1-4a8b-96bb-62b14c39b1f5", description: "I am updating this task's description"}) {
     id
@@ -195,7 +195,7 @@ mutation {
 
 **Delete task**
 
-```json
+```JavaScript
 mutation {
   deleteTask (id: "b58751da-66f1-4757-8ebd-d47d20d3eadb")
 }
@@ -205,7 +205,7 @@ mutation {
 
 **List your own tasks**
 
-```json
+```JavaScript
 {
   getOwnTasks {
     id
@@ -221,7 +221,7 @@ mutation {
 
 You can fetch the list of tasks that the authenticated user can access (his own tasks + tasks that were shared to him) using the following query as an example:
 
-```json
+```JavaScript
 {
   getAllTasks {
     id
@@ -241,7 +241,7 @@ You can fetch the list of tasks that the authenticated user can access (his own 
 
 changing a task's status works like a toggle, you only need to provide the task id. Of course you need to be the owner of that task otherwise you will get an error response.
 
-```json
+```JavaScript
 mutation {
   completeTask(data: { id: "2679ef24-e3e1-4a8b-96bb-62b14c39b1f5" })
 }
@@ -249,7 +249,7 @@ mutation {
 
 **Share task to other users**
 
-```json
+```JavaScript
 mutation {
   shareTask(data: {id: "", toUsersIds: ["c1ebf4a1-28ad-46bd-934b-b5f79ed6eca6", "2e5bb575-8f59-4f38-b2bf-43ca271ae612"]}) {
     id
@@ -260,7 +260,7 @@ mutation {
 
 **Add a comment on a task**
 
-```json
+```JavaScript
 mutation {
   addComment(data: {text: "I need to get that done before 2 PM", taskId: "8e0fdbd5-4df0-413e-b714-f6dc1d955e13"}) {
     id
